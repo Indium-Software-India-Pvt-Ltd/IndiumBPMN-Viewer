@@ -1,17 +1,14 @@
-## Camunda
-[My widget description]
+## BPMN Web Viewer
+BPMN Diagram Viewer for Mendix
+View BPMN diagrams in your Browser.
 
 ## Features
-[feature highlights]
+Pass the XML in different ways
+1. Pass by BPMN XML URL Attribute (dynamic from entity)
+2. Pass by BPMN XML Attribute (dyanmic from Entity)
+3. Pass by BPMN URL (static)
+4. Adjust Width and Height
 
-## Usage
-[step by step instructions]
-
-## Demo project
-[link to sandbox]
-
-## Issues, suggestions and feature requests
-[link to GitHub issues]
 
 ## Development and contribution
 
