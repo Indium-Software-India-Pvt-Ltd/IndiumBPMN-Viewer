@@ -6,7 +6,11 @@ import "./ui/Camunda.css";
 export class Camunda extends Component {
     render() {
         const viewerProps = {
-            xml: this.props.SampleXml
+            xml: this.props.bpmnxml,
+            height: this.props.height,
+            width: this.props.width,
+            url: this.props.url,
+            xmlUrl: this.props.urlAttribute 
         }
         return <BPMNDiagram {...viewerProps}></BPMNDiagram>;
     }
