@@ -10,7 +10,8 @@ export class Camunda extends Component {
             height: this.props.height,
             width: this.props.width,
             url: this.props.url,
-            xmlUrl: this.props.urlAttribute 
+            xmlUrl: this.props.urlAttribute,
+            taskdata: this.props.taskdata
         }
         return <BPMNDiagram {...viewerProps}></BPMNDiagram>;
     }

@@ -24,6 +24,13 @@
                     <attributeType name="String" />
                 </attributeTypes>
             </property>
+            <property key="taskdata" type="attribute" required="false">
+                <caption>Current Task Attribute</caption>
+                <description>Current Task Attribute</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
             <property key="url" type="string" required="false">
                 <caption>BPMN Diagram URL</caption>
                 <description>BPMN 2.0 diagram from URL (Third Priority)</description>

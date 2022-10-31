@@ -3,6 +3,8 @@ import {createElement, cloneElement }   from "react";
 import axios from "axios";
 
 import Viewer from 'bpmn-js/lib/NavigatedViewer';
+import Modeler from 'bpmn-js/lib/Modeler';
+import "../ui/Camunda.css";
 
 
 export default class BPMNDiagram extends React.Component {
@@ -32,29 +34,16 @@ export default class BPMNDiagram extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(prevProps.xml !== this.props.xml) {
-      const {
-        url,
-        xml
-      } = this.props;
-  
-      if(url){
-        this.openFromUrl(url)
-      }
-      else if(xml) {
-        this.importXML(xml.value)
-      }
-    }
+    if((prevProps.xml || prevProps.xmlUrl) && (this.props.xml || this.props.xmlUrl))
+      this.openXml();
   }
 
   openFromUrl(url) {
     console.log('attempting to open <' + url + '>');
-    axios
-    .get(
-      url
-    )
-    .then((r) => {
-      this.importXML(r.data)
+    axios.get(url)
+    .then(async (r) => {
+      await this.importXML(r.data)
+      this.highlightCurrentTask();
     })
     .catch((e) => {
       console.log(e);
@@ -63,21 +52,49 @@ export default class BPMNDiagram extends React.Component {
   }
 
   async importXML(xml) {
-    try {
-      const result = this.viewer.importXML(xml);
-      const { warnings } = result;
-      result.resized();
-      result.zoom('fit-viewport', 'auto');
-
-      this.setState({loaded: true});
-      console.log(warnings);
-    } catch (err) {
-      console.log(err.message, err.warnings);
+    if(xml){
+      try {
+        const result = this.viewer.importXML(xml);
+        const { warnings } = result;
+        result.zoom('fit-viewport', 'auto');
+       
+        this.setState({loaded: true});
+        console.log(warnings);
+      } catch (err) {
+        console.log(err.message, err.warnings);
+      }
+      
     }
+  }
+
+  highlightCurrentTask(){
+    if(this.props.taskdata){
+      var overlays = this.viewer.get('overlays');
+      var elementRegistry = this.viewer.get('elementRegistry'); 
+      var shape = elementRegistry.get('approveInvoice');
+      if(shape){
+        var $overlayHtml = document.createElement('div') 
+        $overlayHtml.className  ='highlight-overlay'
+        $overlayHtml.style.cssText = `width:${shape.width}px;height:${shape.height}px;background-color: green;opacity: 0.4;pointer-events: none; `
+  
+          overlays.add('approveInvoice', {
+            position: {
+              top: 0,
+              left: 0
+            },
+            html: $overlayHtml
+          });
+        }
+      }
+      
   }
 
   componentDidMount() {
     this.viewer.attachTo(this.container);
+    this.openXml();
+  }
+
+  async openXml(){
     const {
       url,
       xml,
@@ -88,7 +105,8 @@ export default class BPMNDiagram extends React.Component {
       this.openFromUrl(xmlUrl.value)
     }
     else if(xml) {
-      this.importXML(xml.value)
+      await this.importXML(xml.value)
+      this.highlightCurrentTask();
     }
     else if(url){
       this.openFromUrl(url)

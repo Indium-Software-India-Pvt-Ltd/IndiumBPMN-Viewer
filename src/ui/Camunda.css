@@ -1,7 +1,3 @@
-/*
-Place your custom CSS here
-*/
-.widget-hello-world {
-
-}
-
+.highlight-overlay {
+    background-color: green;opacity: 0.4;pointer-events: none; /* no pointer events, allows clicking through onto the element */
+  }
