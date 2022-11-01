@@ -57,7 +57,6 @@ export default class BPMNDiagram extends React.Component {
         const result = this.viewer.importXML(xml);
         const { warnings } = result;
         result.zoom('fit-viewport', 'auto');
-       
         this.setState({loaded: true});
         console.log(warnings);
       } catch (err) {
@@ -71,13 +70,13 @@ export default class BPMNDiagram extends React.Component {
     if(this.props.taskdata){
       var overlays = this.viewer.get('overlays');
       var elementRegistry = this.viewer.get('elementRegistry'); 
-      var shape = elementRegistry.get('approveInvoice');
+      var shape = elementRegistry.get(this.props.taskdata.value);
       if(shape){
         var $overlayHtml = document.createElement('div') 
         $overlayHtml.className  ='highlight-overlay'
         $overlayHtml.style.cssText = `width:${shape.width}px;height:${shape.height}px;background-color: green;opacity: 0.4;pointer-events: none; `
   
-          overlays.add('approveInvoice', {
+          overlays.add(this.props.taskdata.value, {
             position: {
               top: 0,
               left: 0
